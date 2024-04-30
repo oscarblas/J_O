@@ -1,0 +1,32 @@
+#define TRIGGER_PIN  2  // Pin del ESP32 conectado al pin de TRIGGER del sensor de ultrasonido
+#define ECHO_PIN     4  // Pin del ESP32 conectado al pin de ECHO del sensor de ultrasonido
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+}
+
+void loop() {
+  long duration, distance;
+  
+  // Genera un pulso de 10 microsegundos en el pin de TRIGGER
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+  
+  // Mide el tiempo de respuesta en el pin de ECHO
+  duration = pulseIn(ECHO_PIN, HIGH);
+  
+  // Calcula la distancia en centímetros (la velocidad del sonido es de 343 m/s)
+  distance = duration * 0.034 / 2;
+  
+  // Imprime la distancia medida
+  Serial.print("Distancia: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  delay(1000);  // Espera 1 segundo antes de realizar la próxima medición
+}
